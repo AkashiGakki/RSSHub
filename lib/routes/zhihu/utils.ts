@@ -56,6 +56,13 @@ export const processImage = (content: string) => {
     return $.html();
 };
 
+export const getCookieValueByKey = (key: string) =>
+    config.zhihu.cookies
+        ?.split(';')
+        .map((e) => e.trim())
+        .find((e) => e.startsWith(key + '='))
+        ?.slice(key.length + 1) || '';
+
 export const getSignedHeader = async (url: string, apiPath: string) => {
     // Because the API of zhihu.com has changed, we must use the value of `d_c0` (extracted from cookies) to calculate
     // `x-zse-96`. So first get `d_c0`, then get the actual data of a ZhiHu question. In this way, we don't need to
@@ -63,9 +70,12 @@ export const getSignedHeader = async (url: string, apiPath: string) => {
 
     // fisrt: get cookie(dc_0) from zhihu.com
     const dc0 = await cache.tryGet('zhihu:cookies:d_c0', async () => {
-        const response1 = await ofetch.raw(url);
-        const zseCk = response1._data.match(/var e="__zse_ck",t=\(typeof __g\.ck == 'string' && __g\.ck\)\|\|"([\w+/=]*?)",_=6048e5;/)?.[1];
-
+        if (getCookieValueByKey('d_c0')) {
+            return getCookieValueByKey('d_c0');
+        }
+        const response1 = await ofetch.raw('https://static.zhihu.com/zse-ck/v3.js');
+        const script = await response1._data.text();
+        const zseCk = script.match(/__g\.ck\|\|"([\w+/=\\]*?)",_=/)?.[1];
         const response2 = zseCk
             ? await ofetch.raw(url, {
                   headers: {
@@ -77,15 +87,13 @@ export const getSignedHeader = async (url: string, apiPath: string) => {
               })
             : null;
 
-        const dc0 = (response2 || response1).headers
-            .getSetCookie()
-            .find((s) => s.startsWith('d_c0='))
-            ?.split(';')[0]
-            .trim()
-            .slice('d_c0='.length);
-        if (!dc0) {
-            throw new Error('Failed to extract `d_c0` from cookies');
-        }
+        const dc0 =
+            (response2 || response1).headers
+                .getSetCookie()
+                .find((s) => s.startsWith('d_c0='))
+                ?.split(';')[0]
+                .trim()
+                .slice('d_c0='.length) || '';
 
         return dc0;
     });
@@ -95,11 +103,8 @@ export const getSignedHeader = async (url: string, apiPath: string) => {
     const f = `${xzse93}+${apiPath}+${dc0}`;
     const xzse96 = '2.0_' + g_encrypt(md5(f));
 
-    const zc0 = config.zhihu.cookies
-        ?.split(';')
-        .map((e) => e.trim())
-        .find((e) => e.includes('z_c0'))
-        ?.slice('z_c0='.length);
+    const zc0 = getCookieValueByKey('z_c0');
+
     return {
         cookie: `d_c0=${dc0}${zc0 ? `;z_c0=${zc0}` : ''}`,
         'x-zse-96': xzse96,

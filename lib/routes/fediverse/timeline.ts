@@ -5,6 +5,7 @@ import { parseDate } from '@/utils/parse-date';
 import ofetch from '@/utils/ofetch';
 import { config } from '@/config';
 import ConfigNotFoundError from '@/errors/types/config-not-found';
+import parser from '@/utils/rss-parser';
 
 export const route: Route = {
     path: '/timeline/:account',
@@ -21,11 +22,12 @@ export const route: Route = {
         supportScihub: false,
     },
     name: 'Timeline',
-    maintainers: ['DIYgod'],
+    maintainers: ['DIYgod', 'pseudoyu'],
     handler,
 };
 
 const allowedDomain = new Set(['mastodon.social', 'pawoo.net', config.mastodon.apiHost].filter(Boolean));
+const activityPubTypes = new Set(['application/activity+json', 'application/ld+json; profile="https://www.w3.org/ns/activitystreams"']);
 
 async function handler(ctx) {
     const account = ctx.req.param('account');
@@ -41,41 +43,74 @@ async function handler(ctx) {
 
     const requestOptions = {
         headers: {
-            Accept: 'application/activity+json',
+            Accept: 'application/ld+json; profile="https://www.w3.org/ns/activitystreams"',
         },
     };
 
-    const acc = await ofetch(`https://${domain}/.well-known/webfinger?resource=acct:${account}`, requestOptions);
-
-    const jsonLink = acc.links.find((link) => link.rel === 'self')?.href;
+    const acc = await ofetch(`https://${domain}/.well-known/webfinger?resource=acct:${account}`, {
+        headers: {
+            Accept: 'application/jrd+json',
+        },
+    });
+    const jsonLink = acc.links.find((link) => link.rel === 'self' && activityPubTypes.has(link.type))?.href;
     const link = acc.links.find((link) => link.rel === 'http://webfinger.net/rel/profile-page')?.href;
+    const officialFeed = await parser.parseURL(`${link}.rss`);
+
+    if (officialFeed) {
+        return {
+            title: `${officialFeed.title} (Fediverse@${account})`,
+            description: officialFeed.description,
+            image: officialFeed.image?.url,
+            link: officialFeed.link,
+            item: officialFeed.items.map((item) => ({
+                title: item.title,
+                description: item.content,
+                link: item.link,
+                pubDate: item.pubDate ? parseDate(item.pubDate) : null,
+                guid: item.guid,
+            })),
+        };
+    }
 
     const self = await ofetch(jsonLink, requestOptions);
 
+    // If RSS feed is not available, fallback to original method
     const outbox = await ofetch(self.outbox, requestOptions);
     const firstOutbox = await ofetch(outbox.first, requestOptions);
 
     const items = firstOutbox.orderedItems;
+
+    const itemResolvers = [] as Promise<any>[];
+
+    for (const item of items) {
+        if (!['Announce', 'Create', 'Update'].includes(item.type)) {
+            continue;
+        }
+        if (typeof item.object === 'string') {
+            itemResolvers.push(
+                (async (item) => {
+                    item.object = await ofetch(item.object, requestOptions);
+                    return item;
+                })(item)
+            );
+        } else {
+            itemResolvers.push(Promise.resolve(item));
+        }
+    }
+
+    const resolvedItems = await Promise.all(itemResolvers);
 
     return {
         title: `${self.name || self.preferredUsername} (Fediverse@${account})`,
         description: self.summary,
         image: self.icon?.url || self.image?.url,
         link,
-        item: items.map((item) => {
-            const object =
-                typeof item.object === 'string'
-                    ? {
-                          content: item.object,
-                      }
-                    : item.object;
-            return {
-                title: object.content,
-                description: `${object.content}\n${object.attachment?.map((attachment) => `<img src="${attachment.url}" width="${attachment.width}" height="${attachment.height}" />`).join('\n') || ''}`,
-                link: item.url,
-                pubDate: parseDate(item.published),
-                guid: item.id,
-            };
-        }),
+        item: resolvedItems.map((item) => ({
+            title: item.object.content.replaceAll(/<[^<]*>/g, ''),
+            description: `${item.object.content}\n${item.object.attachment?.map((attachment) => `<img src="${attachment.url}" width="${attachment.width}" height="${attachment.height}" />`).join('\n') || ''}`,
+            link: item.object.url,
+            pubDate: parseDate(item.published),
+            guid: item.id,
+        })),
     };
 }
