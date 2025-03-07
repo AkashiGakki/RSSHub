@@ -7219,9 +7219,6 @@
   "/tkww/:column{.+}?": [
     "quiniapiezoelectricity"
   ],
-  "/tmtpost/column/:id": [
-    "nczitzk"
-  ],
   "/tmtpost/new": [
     "nczitzk"
   ],
