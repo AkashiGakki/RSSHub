@@ -2695,9 +2695,6 @@
   "/geekpark/:column?": [
     "nczitzk"
   ],
-  "/gelbooru/post/:tags?/:quality?": [
-    "magicFeirl"
-  ],
   "/gelonghui/home/:tag?": [
     "TonyRL"
   ],
