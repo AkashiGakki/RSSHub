@@ -17942,6 +17942,24 @@
     "url": "chaping.cn",
     "lang": "zh-CN"
   },
+  "cherrytimes": {
+    "routes": {
+      "/market": {
+        "path": "/market",
+        "categories": [
+          "new-media"
+        ],
+        "example": "/cherrytimes/market",
+        "name": "Market",
+        "maintainers": [
+          "canonnizq"
+        ],
+        "location": "market.ts"
+      }
+    },
+    "name": "Cherry Times",
+    "url": "cherrytimes.it"
+  },
   "chiculture": {
     "routes": {
       "/topic/:category?": {
@@ -34270,6 +34288,61 @@
     ],
     "description": "",
     "lang": "zh-CN"
+  },
+  "gelbooru": {
+    "routes": {
+      "/post/:tags?/:quality?": {
+        "path": "/post/:tags?/:quality?",
+        "categories": [
+          "picture"
+        ],
+        "view": 2,
+        "example": "/gelbooru/post/1girl rating:general",
+        "parameters": {
+          "tags": "要搜索的标签，多个标签用 ` `（空格）隔开",
+          "quality": {
+            "description": "图片质量，可选值为 `sample`（压缩后的图片，推荐值） 或 `orig`（原图），默认为 `sample`",
+            "default": "sample"
+          }
+        },
+        "features": {
+          "requireConfig": [
+            {
+              "name": "GELBOORU_API_KEY",
+              "description": "Gelbooru 偶尔会开启 API 认证，需配合 `GELBOORU_USER_ID`，从 `https://gelbooru.com/index.php?page=account&s=options` 获取",
+              "optional": true
+            },
+            {
+              "name": "GELBOORU_USER_ID",
+              "description": "参见 `GELBOORU_API_KEY`",
+              "optional": true
+            }
+          ],
+          "requirePuppeteer": false,
+          "antiCrawler": false,
+          "supportRadar": true,
+          "supportBT": false,
+          "supportPodcast": false,
+          "supportScihub": false
+        },
+        "radar": [
+          {
+            "source": [
+              "gelbooru.com/index.php"
+            ]
+          }
+        ],
+        "name": "标签查询",
+        "maintainers": [
+          "magicFeirl"
+        ],
+        "description": "\n- 默认查询: `/gelbooru/post` 功能等同查询 Gelbooru 网站最新的投稿\n- 单标签查询: `/gelbooru/post/1girl` 查询 `1girl` 的最新投稿\n- 多标签查询: `/gelbooru/post/1girl school_uniform rating:general`\n- 指定为原图: `/gelbooru/post/1girl school_uniform rating:general/orig`\n- 更多例子: 请参考 Gelbooru 官方 wiki https://gelbooru.com/index.php?page=wiki&s=&s=view&id=25921\n\n**可选的 URL 参数**\n- limit 页面返回数据量，默认 40，可选 1 ~ 100\n\ne.g.: `/gelbooru/post?limit=20&`\n",
+        "location": "post.ts"
+      }
+    },
+    "name": "Gelbooru",
+    "url": "gelbooru.com",
+    "description": "gelbooru posts"
   },
   "gelonghui": {
     "routes": {
@@ -53572,6 +53645,64 @@
     "zh": {
       "name": "毕马威"
     },
+    "lang": "en"
+  },
+  "kpopping": {
+    "routes": {
+      "/news/:filter{.+}?": {
+        "path": "/news/:filter{.+}?",
+        "name": "News",
+        "url": "kpopping.com",
+        "maintainers": [
+          "nczitzk"
+        ],
+        "example": "/kpopping/news/gender-all/category-all/idol-any/group-any/order",
+        "parameters": {
+          "filter": "Filter"
+        },
+        "description": ":::tip\nIf you subscribe to [All male articles](https://kpopping.com/news/gender-male/category-all/idol-any/group-any/order)，where the URL is `https://kpopping.com/news/gender-male/category-all/idol-any/group-any/order`, extract the part `https://kpopping.com/news` to the end, which is `gender-male/category-all/idol-any/group-any/order`, and use it as the parameter to fill in. Therefore, the route will be [`/kpopping/news/gender-male/category-all/idol-any/group-any/order`](https://rsshub.app/kpopping/news/gender-male/category-all/idol-any/group-any/order).\n:::\n",
+        "categories": [
+          "new-media"
+        ],
+        "features": {
+          "requireConfig": false,
+          "requirePuppeteer": false,
+          "antiCrawler": false,
+          "supportRadar": true,
+          "supportBT": false,
+          "supportPodcast": false,
+          "supportScihub": false
+        },
+        "radar": [
+          {
+            "source": [
+              "kpopping.com/news/:filter"
+            ]
+          }
+        ],
+        "view": 0,
+        "zh": {
+          "path": "/news/:filter{.+}?",
+          "name": "News",
+          "url": "kpopping.com",
+          "maintainers": [
+            "nczitzk"
+          ],
+          "example": "/kpopping/news/gender-all/category-all/idol-any/group-any/order",
+          "parameters": {
+            "filter": "筛选，可在对应分类页 URL 中找到"
+          },
+          "description": ":::tip\n若订阅 [All male articles](https://kpopping.com/news/gender-male/category-all/idol-any/group-any/order)，网址为 `https://kpopping.com/news/gender-male/category-all/idol-any/group-any/order`，请截取 `https://kpopping.com/news/` 到末尾的部分 `gender-male/category-all/idol-any/group-any/order` 作为 `filter` 参数填入，此时目标路由为 [`/kpopping/news/gender-male/category-all/idol-any/group-any/order`](https://rsshub.app/kpopping/news/gender-male/category-all/idol-any/group-any/order)。\n:::\n"
+        },
+        "location": "news.ts"
+      }
+    },
+    "name": "kpopping",
+    "url": "kpopping.com",
+    "categories": [
+      "new-media"
+    ],
+    "description": "",
     "lang": "en"
   },
   "ktown4u": {

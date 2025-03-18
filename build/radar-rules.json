@@ -12965,6 +12965,19 @@
       }
     ]
   },
+  "gelbooru.com": {
+    "_name": "Gelbooru",
+    ".": [
+      {
+        "title": "标签查询",
+        "docs": "https://docs.rsshub.app/routes/picture",
+        "source": [
+          "/index.php"
+        ],
+        "target": "/gelbooru/post/:tags?/:quality?"
+      }
+    ]
+  },
   "gelonghui.com": {
     "_name": "格隆汇",
     ".": [
@@ -20141,6 +20154,19 @@
           "/cn/zh/home/insights.html"
         ],
         "target": "/kpmg/insights/zh"
+      }
+    ]
+  },
+  "kpopping.com": {
+    "_name": "kpopping",
+    ".": [
+      {
+        "title": "News",
+        "docs": "https://docs.rsshub.app/routes/new-media",
+        "source": [
+          "/news/:filter"
+        ],
+        "target": "/kpoppingparams=>{const filter=params.filter;return`/kpopping/news${filter?`/${filter}`:\"\"}`}"
       }
     ]
   },
