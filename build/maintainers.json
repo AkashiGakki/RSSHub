@@ -2714,6 +2714,9 @@
   "/gcores/news": [
     "nczitzk"
   ],
+  "/gcores/radios/preview": [
+    "nczitzk"
+  ],
   "/gcores/radios/:category?": [
     "eternasuno"
   ],

@@ -35147,6 +35147,37 @@
         "view": 0,
         "location": "news.ts"
       },
+      "/radios/preview": {
+        "path": "/radios/preview",
+        "name": "预告",
+        "url": "www.gcores.com",
+        "maintainers": [
+          "nczitzk"
+        ],
+        "example": "/gcores/radios/preview",
+        "categories": [
+          "game"
+        ],
+        "features": {
+          "requireConfig": false,
+          "requirePuppeteer": false,
+          "antiCrawler": false,
+          "supportRadar": true,
+          "supportBT": false,
+          "supportPodcast": false,
+          "supportScihub": false
+        },
+        "radar": [
+          {
+            "source": [
+              "www.gcores.com/radios/preview"
+            ],
+            "target": "/gcores/radios/preview"
+          }
+        ],
+        "view": 5,
+        "location": "program-previews.ts"
+      },
       "/radios/:category?": {
         "path": "/radios/:category?",
         "categories": [
