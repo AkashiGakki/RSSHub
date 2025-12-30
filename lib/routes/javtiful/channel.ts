@@ -1,6 +1,8 @@
-import { Route, Data, DataItem } from '@/types';
-import ofetch from '@/utils/ofetch';
 import { load } from 'cheerio';
+
+import type { Data, DataItem, Route } from '@/types';
+import ofetch from '@/utils/ofetch';
+
 import { parseItems } from './utils';
 
 export const route: Route = {
@@ -17,6 +19,9 @@ export const route: Route = {
             target: '/channel/:id',
         },
     ],
+    features: {
+        nsfw: true,
+    },
 };
 
 async function handler(ctx): Promise<Data> {

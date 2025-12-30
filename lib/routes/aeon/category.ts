@@ -1,11 +1,12 @@
-import { Route } from '@/types';
+import type { Route } from '@/types';
 import ofetch from '@/utils/ofetch';
-import { getBuildId, getData } from './utils';
 import { parseDate } from '@/utils/parse-date';
+
+import { getBuildId, getData } from './utils';
 
 export const route: Route = {
     path: '/category/:category',
-    categories: ['new-media', 'popular'],
+    categories: ['new-media'],
     example: '/aeon/category/philosophy',
     parameters: {
         category: {

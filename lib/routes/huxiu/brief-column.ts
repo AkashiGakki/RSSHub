@@ -1,12 +1,12 @@
-import { Route } from '@/types';
+import type { Route } from '@/types';
 import cache from '@/utils/cache';
 import got from '@/utils/got';
 
-import { apiBriefRootUrl, processItems, fetchBriefColumnData } from './util';
+import { apiBriefRootUrl, fetchBriefColumnData, processItems } from './util';
 
 export const route: Route = {
     path: '/briefcolumn/:id',
-    categories: ['new-media', 'popular'],
+    categories: ['new-media'],
     example: '/huxiu/briefcolumn/1',
     parameters: { id: '简报 id，可在对应简报页 URL 中找到' },
     features: {

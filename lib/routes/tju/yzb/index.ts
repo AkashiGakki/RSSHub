@@ -1,8 +1,9 @@
-import { Route } from '@/types';
-import cache from '@/utils/cache';
-import got from '@/utils/got';
 import { load } from 'cheerio';
 import iconv from 'iconv-lite';
+
+import type { Route } from '@/types';
+import cache from '@/utils/cache';
+import got from '@/utils/got';
 import { parseDate } from '@/utils/parse-date';
 import timezone from '@/utils/timezone';
 
@@ -41,7 +42,7 @@ export const route: Route = {
 };
 
 async function handler(ctx) {
-    const type = ctx.params && ctx.req.param('type');
+    const { type } = ctx.req.param();
     let path, subtitle;
 
     switch (type) {
@@ -93,7 +94,7 @@ async function handler(ctx) {
         };
     } else {
         const $ = load(iconv.decode(response.data, 'gbk'));
-        const list = $('body > table:nth-child(3) > tbody > tr > td.table_left_right > table > tbody > tr:nth-child(3) > td > table > tbody > tr:nth-child(1) > td > table > tbody > tr')
+        const list = $('td.table_left_right > table > tbody > tr:nth-child(3) > td > table > tbody > tr:nth-child(1) > td > table > tbody > tr')
             .slice(1, -1)
             .toArray()
             .map((item) => {

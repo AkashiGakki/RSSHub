@@ -1,7 +1,8 @@
-import cache from '@/utils/cache';
-import md5 from '@/utils/md5';
 import { load } from 'cheerio';
+
+import cache from '@/utils/cache';
 import got from '@/utils/got';
+import md5 from '@/utils/md5';
 import { parseDate } from '@/utils/parse-date';
 
 const dynamicTpye = { 0: '基本动态', 8: '酷图', 9: '评论', 10: '提问', 11: '回答', 12: '图文', 15: '二手', 17: '观点', 20: '交易动态' };
@@ -24,6 +25,7 @@ const get_app_token = () => {
 };
 
 const base_url = 'https://api.coolapk.com';
+const v2_api_url = 'https://api2.coolapk.com';
 
 const getHeaders = () => ({
     'X-Requested-With': 'XMLHttpRequest',
@@ -58,10 +60,10 @@ const parseTuwenFromRaw = (raw) =>
 
 const parseDynamic = async (item) => {
     const pubDate = parseDate(item.dateline, 'X');
-    if (item.entityType === 'sponsorCard' || item.shareUrl === undefined) {
+    if (item.entityType === 'sponsorCard' || !item.url) {
         return;
     }
-    const itemUrl = item.shareUrl.split('?')[0];
+    const itemUrl = `${v2_api_url}/v6${item.url.replace('/feed/', '/feed/detail?id=')}`;
     let description, title;
     const type = Number.parseInt(item.type);
     switch (type) {
@@ -135,8 +137,8 @@ const parseDynamic = async (item) => {
         title,
         description,
         pubDate,
-        link: item.shareUrl,
-        guid: itemUrl,
+        link: `https://www.coolapk.com${item.url}`,
+        // guid: itemUrl,
         author: item.username,
     };
 };

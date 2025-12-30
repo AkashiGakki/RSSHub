@@ -1,10 +1,10 @@
-import { Route } from '@/types';
+import type { Route } from '@/types';
 import got from '@/utils/got';
 import { parseDate } from '@/utils/parse-date';
 
 export const route: Route = {
     path: '/activity/:slug',
-    categories: ['new-media', 'popular'],
+    categories: ['new-media'],
     example: '/sspai/activity/urfp0d9i',
     parameters: { slug: '作者 slug，可在作者主页URL中找到' },
     features: {

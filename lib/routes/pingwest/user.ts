@@ -1,12 +1,14 @@
-import { Route } from '@/types';
+import { load } from 'cheerio';
+
+import type { Route } from '@/types';
 import cache from '@/utils/cache';
 import got from '@/utils/got';
-import { load } from 'cheerio';
+
 import utils from './utils';
 
 export const route: Route = {
     path: '/user/:uid/:type?/:option?',
-    categories: ['new-media', 'popular'],
+    categories: ['new-media'],
     example: '/pingwest/user/7781550877/article',
     parameters: { uid: '用户id, 可从用户主页中得到', type: '内容类型, 默认为`article`', option: '参数' },
     features: {

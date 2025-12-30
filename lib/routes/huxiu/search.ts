@@ -1,12 +1,12 @@
-import { Route } from '@/types';
+import type { Route } from '@/types';
 import cache from '@/utils/cache';
 import got from '@/utils/got';
 
-import { rootUrl, apiSearchRootUrl, generateSignature, processItems, fetchData } from './util';
+import { apiSearchRootUrl, fetchData, generateSignature, processItems, rootUrl } from './util';
 
 export const route: Route = {
     path: '/search/:keyword',
-    categories: ['new-media', 'popular'],
+    categories: ['new-media'],
     example: '/huxiu/search/生活',
     parameters: { keyword: '关键字' },
     features: {

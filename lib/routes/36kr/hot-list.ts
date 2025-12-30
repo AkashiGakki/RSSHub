@@ -1,10 +1,10 @@
-import { Route } from '@/types';
+import InvalidParameterError from '@/errors/types/invalid-parameter';
+import type { Route } from '@/types';
 import cache from '@/utils/cache';
 import got from '@/utils/got';
 import { parseDate } from '@/utils/parse-date';
 
-import { rootUrl, ProcessItem } from './utils';
-import InvalidParameterError from '@/errors/types/invalid-parameter';
+import { ProcessItem, rootUrl } from './utils';
 
 const categories = {
     24: {
@@ -27,7 +27,7 @@ const categories = {
 
 export const route: Route = {
     path: '/hot-list/:category?',
-    categories: ['new-media', 'popular'],
+    categories: ['new-media'],
     example: '/36kr/hot-list',
     parameters: { category: '分类，默认为24小时热榜' },
     features: {

@@ -1,9 +1,11 @@
-import { Route } from '@/types';
+import { load } from 'cheerio';
+
+import type { Route } from '@/types';
 import cache from '@/utils/cache';
 import got from '@/utils/got';
-import { load } from 'cheerio';
 import { parseDate } from '@/utils/parse-date';
 import timezone from '@/utils/timezone';
+
 import { parseArticle } from './utils';
 
 export const route: Route = {
@@ -34,7 +36,7 @@ export const route: Route = {
 
 async function handler(ctx) {
     const { category = '' } = ctx.req.param();
-    const isArcPost = category && !Number.isNaN(category); // https://www.3dmgame.com/news/\d+/
+    const isArcPost = category && !Number.isNaN(Number(category)); // https://www.3dmgame.com/news/\d+/
     const url = `https://www.3dmgame.com/${category === 'news_36_1' ? category : 'news/' + category}`;
     const res = await got(url);
     const $ = load(res.data);

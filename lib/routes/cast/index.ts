@@ -1,9 +1,11 @@
-import { Route } from '@/types';
+import { load } from 'cheerio';
+
+import type { Route } from '@/types';
 import cache from '@/utils/cache';
 import got from '@/utils/got';
-import { load } from 'cheerio';
 import { parseDate } from '@/utils/parse-date';
 import timezone from '@/utils/timezone';
+
 const baseUrl = 'https://www.cast.org.cn';
 
 async function parsePage(html: string) {
@@ -94,7 +96,7 @@ async function handler(ctx) {
     } else {
         const buildUnitScript = $('script[parseType="bulidstatic"]');
         const queryUrl = `${baseUrl}${buildUnitScript.attr('url')}`;
-        const queryData = JSON.parse(buildUnitScript.attr('querydata')?.replace(/'/g, '"') ?? '{}');
+        const queryData = JSON.parse(buildUnitScript.attr('querydata')?.replaceAll("'", '"') ?? '{}');
         queryData.paramJson = `{"pageNo":1,"pageSize":${limit}}`;
 
         const { data } = await got.get<{ data: { html: string } }>(queryUrl, {

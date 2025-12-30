@@ -1,9 +1,10 @@
-import { Route } from '@/types';
-import cache from '@/utils/cache';
 import { load } from 'cheerio';
-import { parseDate } from '@/utils/parse-date';
 import type { Context } from 'hono';
+
+import type { Route } from '@/types';
+import cache from '@/utils/cache';
 import ofetch from '@/utils/ofetch';
+import { parseDate } from '@/utils/parse-date';
 
 type PageDataItem = {
     tid: string;
@@ -33,13 +34,16 @@ export const route: Route = {
     name: '禁忌书屋',
     maintainers: ['nczitzk', 'Gabrlie'],
     handler,
+    features: {
+        nsfw: true,
+    },
 };
 
 async function handler(ctx: Context) {
     const { id = 'bbs4', type = 'home', keyword } = ctx.req.param();
 
     const rootUrl = 'https://www.cool18.com/' + id + '/index.php';
-    const params = type === 'home' ? '' : (type === 'gold' ? '?app=forum&act=gold' : `?action=search&act=threadsearch&app=forum&keywords=${keyword}&submit=查询`);
+    const params = type === 'home' ? '' : type === 'gold' ? '?app=forum&act=gold' : `?action=search&act=threadsearch&app=forum&keywords=${keyword}&submit=查询`;
 
     const currentUrl = rootUrl + params;
 

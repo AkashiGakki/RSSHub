@@ -1,7 +1,8 @@
-import { Route } from '@/types';
+import { load } from 'cheerio';
+
+import type { Route } from '@/types';
 import cache from '@/utils/cache';
 import got from '@/utils/got';
-import { load } from 'cheerio';
 
 const rootUrl = 'https://www.hellobtc.com';
 
@@ -31,7 +32,7 @@ const titleMap = {
 
 export const route: Route = {
     path: '/kepu/:channel?',
-    categories: ['new-media', 'popular'],
+    categories: ['new-media'],
     example: '/hellobtc/kepu/latest',
     parameters: { channel: '类型，见下表，默认为最新' },
     features: {

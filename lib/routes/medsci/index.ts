@@ -1,12 +1,13 @@
-import { Route } from '@/types';
+import { load } from 'cheerio';
+
+import type { Route } from '@/types';
 import cache from '@/utils/cache';
 import got from '@/utils/got';
-import { load } from 'cheerio';
 import { parseDate, parseRelativeDate } from '@/utils/parse-date';
 
 export const route: Route = {
     path: '/:sid?/:tid?',
-    categories: ['new-media', 'popular'],
+    categories: ['new-media'],
     example: '/medsci',
     parameters: { sid: '科室，见下表，默认为推荐', tid: '亚专业，可在对应科室页 URL 中找到，默认为该科室的全部' },
     features: {
