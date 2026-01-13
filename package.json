@@ -91,7 +91,7 @@
         "http-cookie-agent": "7.0.3",
         "https-proxy-agent": "7.0.6",
         "iconv-lite": "0.7.2",
-        "imapflow": "1.2.5",
+        "imapflow": "1.2.6",
         "instagram-private-api": "1.46.1",
         "ioredis": "5.9.1",
         "ip-regex": "5.0.0",
@@ -141,7 +141,7 @@
         "zod": "4.3.5"
     },
     "devDependencies": {
-        "@babel/preset-env": "7.28.5",
+        "@babel/preset-env": "7.28.6",
         "@babel/preset-typescript": "7.28.5",
         "@bbob/types": "4.3.1",
         "@cloudflare/puppeteer": "1.0.4",
@@ -164,7 +164,7 @@
         "@types/mailparser": "3.4.6",
         "@types/markdown-it": "14.1.2",
         "@types/module-alias": "2.0.4",
-        "@types/node": "25.0.6",
+        "@types/node": "25.0.7",
         "@types/sanitize-html": "2.16.0",
         "@types/supertest": "6.0.3",
         "@typescript-eslint/eslint-plugin": "8.52.0",
