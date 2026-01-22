@@ -41692,6 +41692,79 @@
       }
     ]
   },
+  "slashdot.org": {
+    "_name": "Slashdot",
+    ".": [
+      {
+        "title": "News",
+        "docs": "https://docs.rsshub.app/routes/new-media",
+        "source": [
+          "/"
+        ],
+        "target": "/slashdot/:section?"
+      }
+    ],
+    "devices": [
+      {
+        "title": "News",
+        "docs": "https://docs.rsshub.app/routes/new-media",
+        "source": [
+          "/"
+        ],
+        "target": "/slashdot/devices"
+      }
+    ],
+    "build": [
+      {
+        "title": "News",
+        "docs": "https://docs.rsshub.app/routes/new-media",
+        "source": [
+          "/"
+        ],
+        "target": "/slashdot/build"
+      }
+    ],
+    "entertainment": [
+      {
+        "title": "News",
+        "docs": "https://docs.rsshub.app/routes/new-media",
+        "source": [
+          "/"
+        ],
+        "target": "/slashdot/entertainment"
+      }
+    ],
+    "technology": [
+      {
+        "title": "News",
+        "docs": "https://docs.rsshub.app/routes/new-media",
+        "source": [
+          "/"
+        ],
+        "target": "/slashdot/technology"
+      }
+    ],
+    "science": [
+      {
+        "title": "News",
+        "docs": "https://docs.rsshub.app/routes/new-media",
+        "source": [
+          "/"
+        ],
+        "target": "/slashdot/science"
+      }
+    ],
+    "yro": [
+      {
+        "title": "News",
+        "docs": "https://docs.rsshub.app/routes/new-media",
+        "source": [
+          "/"
+        ],
+        "target": "/slashdot/yro"
+      }
+    ]
+  },
   "slowmist.com": {
     "_name": "慢雾科技",
     ".": [
@@ -45697,6 +45770,21 @@
           "/"
         ],
         "target": "/tynu/"
+      }
+    ]
+  },
+  "typeless.com": {
+    "_name": "Typeless",
+    "www": [
+      {
+        "title": "Changelog",
+        "docs": "https://docs.rsshub.app/routes/program-update",
+        "source": [
+          "/help/release-notes/*",
+          "/help/release-notes",
+          "/"
+        ],
+        "target": "/typeless/changelog"
       }
     ]
   },
