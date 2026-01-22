@@ -12311,6 +12311,29 @@
       }
     ]
   },
+  "codefather.cn": {
+    "_name": "编程导航",
+    "www": [
+      {
+        "title": "帖子",
+        "docs": "https://docs.rsshub.app/routes/programming",
+        "source": [
+          "/",
+          "/"
+        ],
+        "target": "/codefather/posts"
+      },
+      {
+        "title": "问答",
+        "docs": "https://docs.rsshub.app/routes/programming",
+        "source": [
+          "/qa",
+          "/"
+        ],
+        "target": "/codefather/questions"
+      }
+    ]
+  },
   "codeforces.com": {
     "_name": "Codeforces",
     "www": [
